@@ -28,15 +28,15 @@ query_params = st.experimental_get_query_params()
 # Extract the client_id parameter if it exists
 client_id = query_params.get("client_id", [None])[0]
 
-loogik_trips_file = "https://raw.githubusercontent.com/JuanManuel-Cloud/streamlit-get-started-app/master/dummy_data/ViajesRealiLoogik.xls"
-qa_trips_file = "https://raw.githubusercontent.com/JuanManuel-Cloud/streamlit-get-started-app/master/dummy_data/ViajesRealiQA.xls"
+loogik_trips_file = "dummy_data/ViajesRealiLoogik.xlsx"
+qa_trips_file = "dummy_data/ViajesRealiQA.xlsx"
 
 # Check the client_id value and display output accordingly
 if client_id == "1":
     st.write("Es el cliente QA")
     # Only passenger filter
     qa_trips_df = pd.read_excel(
-        qa_trips_file, usecols="B:AC", skiprows=range(0, 7))
+        qa_trips_file, usecols="B:AC", skiprows=range(0, 7), engine="openpyxl")
     qa_trips_df["IMPORTE DEL VIAJE [$]"].replace(
         "s/i", 0, inplace=True)  # Replace "s/i" with 0
     qa_trips_df['FECHA VIAJE'] = pd.to_datetime(qa_trips_df['FECHA VIAJE'])
@@ -50,7 +50,7 @@ elif client_id == "2":
     st.write("Es el cliente Loogik")
     # Only passenger filter
     loogik_trips_df = pd.read_excel(
-        loogik_trips_file, usecols="B:AC", skiprows=range(0, 7))
+        loogik_trips_file, usecols="B:AC", skiprows=range(0, 7), engine="openpyxl")
     loogik_trips_df["IMPORTE DEL VIAJE [$]"].replace(
         "s/i", 0, inplace=True)  # Replace "s/i" with 0
     loogik_trips_df['FECHA VIAJE'] = pd.to_datetime(
